@@ -6,7 +6,7 @@ import { RealityCheck } from "@/components/sections/reality-check";
 import { Solution } from "@/components/sections/solution";
 import { Tracks } from "@/components/sections/tracks";
 import { Process } from "@/components/sections/process";
-import { Partners } from "@/components/sections/partners";
+
 import { Testimonials } from "@/components/sections/testimonials";
 import { Pricing } from "@/components/sections/pricing";
 import { FAQ } from "@/components/sections/faq";
@@ -42,7 +42,6 @@ function Index() {
         <Solution />
         <Tracks />
         <Process />
-        <Partners />
         <Testimonials />
         <Pricing />
         <FAQ />
