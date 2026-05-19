@@ -32,7 +32,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         password: hashedPassword,
         name,
         role: "CANDIDATE",
-        emailVerified: true, // Apply flow mein auto verify
+        emailVerified: false,
         verifyCode,
         verifyCodeExpiry,
       },
@@ -65,7 +65,7 @@ export const verifyEmail = async (req: Request, res: Response, next: NextFunctio
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { emailVerified: true, verifyCode: null, verifyCodeExpiry: null },
+      data: { emailVerified: false, verifyCode: null, verifyCodeExpiry: null },
     });
 
     res.json({ message: "Email verified successfully" });

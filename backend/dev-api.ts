@@ -12,11 +12,29 @@ import profileRoutes from "./src/server/routes/profile.routes";
 import paymentRoutes from "./src/server/routes/payment.routes";
 import applicationRoutes from "./src/server/routes/application.routes";
 import notificationRoutes from "./src/server/routes/notification.routes";
-import resumeRoutes from "./src/server/routes/resume.ts";
+import resumeRoutes from "./src/server/routes/resume.";
 import visitorRoutes from "./src/server/routes/visitor.routes";
 // ...
 
 const app = express();
+
+// dev-api.ts — cors replace karo
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowed = [process.env.CLIENT_URL || "http://localhost:8080", "http://localhost:8080"];
+      // Same-origin requests (origin undefined) aur allowed domains
+      if (!origin || allowed.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 // Security
 app.use(helmet());

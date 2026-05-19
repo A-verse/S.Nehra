@@ -71,7 +71,7 @@ function Apply() {
     setLoading(true);
     setError("");
     try {
-      // 1. Signup
+      // 1. Signup try karo
       const signupRes = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,27 +82,17 @@ function Apply() {
           password: formData.password,
         }),
       });
-      const signupData = await signupRes.json();
-      console.log("Signup:", signupRes.status, signupData);
 
-      if (!signupRes.ok && signupData.message !== "Email already registered") {
-        throw new Error(signupData.message);
-      }
-
-      // 2. Login if already registered
       if (!signupRes.ok) {
-        const loginRes = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        // ✅ Email already registered — login page pe redirect karo
+        navigate({
+          to: "/login",
+          search: { email: formData.email, redirect: "/apply" },
         });
-        const loginData = await loginRes.json();
-        console.log("Login:", loginRes.status, loginData);
-        if (!loginRes.ok) throw new Error("Login failed. Check your password.");
+        return;
       }
 
-      // 3. Application create
+      // 2. Application create karo
       const appRes = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -113,14 +103,12 @@ function Apply() {
         }),
       });
       const appData = await appRes.json();
-      console.log("Application:", appRes.status, appData);
-      if (!appRes.ok) throw new Error(appData.message);
+      if (!appRes.ok) throw new Error(appData.message || "Application failed");
 
       sessionStorage.setItem("verify_email", formData.email);
-      setStep(last - 1);
+      setStep(5); // Payment step
     } catch (err: any) {
-      console.error("Error:", err);
-      setError(err.message || "Something went wrong");
+      setError(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -137,7 +125,6 @@ function Apply() {
         body: JSON.stringify({ amount: 9999, description: "S.Nehra — Application Fee" }),
       });
       const order = await orderRes.json();
-      console.log("Order:", orderRes.status, order);
       if (!orderRes.ok) throw new Error(order.message);
 
       const options = {
@@ -167,7 +154,6 @@ function Apply() {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err: any) {
-      console.error("Payment error:", err);
       setError(err.message || "Payment failed");
     } finally {
       setLoading(false);
@@ -192,13 +178,14 @@ function Apply() {
           {steps.slice(0, -1).map((s, i) => (
             <div key={s} className="flex flex-1 items-center gap-2 min-w-[100px]">
               <div
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-medium transition-colors ${
+                className={[
+                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-medium transition-colors",
                   i < step
                     ? "bg-gold text-ink"
                     : i === step
                       ? "bg-ink text-primary-foreground"
-                      : "border border-border bg-background text-muted-foreground"
-                }`}
+                      : "border border-border bg-background text-muted-foreground",
+                ].join(" ")}
               >
                 {i < step ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : i + 1}
               </div>
@@ -394,7 +381,12 @@ function Apply() {
                     <button
                       key={o.id}
                       onClick={() => setExp(o.id)}
-                      className={`rounded-[24px] border p-6 text-left transition-all ${exp === o.id ? "border-ink bg-ink text-primary-foreground" : "border-border bg-surface hover:border-ink/30"}`}
+                      className={[
+                        "rounded-[24px] border p-6 text-left transition-all",
+                        exp === o.id
+                          ? "border-ink bg-ink text-primary-foreground"
+                          : "border-border bg-surface hover:border-ink/30",
+                      ].join(" ")}
                     >
                       <div className="font-display text-2xl">{o.t}</div>
                       <div
@@ -496,7 +488,11 @@ function Apply() {
           </motion.div>
         </AnimatePresence>
 
-        {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
+        {error && (
+          <div className="mt-6 rounded-[12px] border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+            {error}
+          </div>
+        )}
 
         {step < last && step !== 5 && (
           <div className="mt-12 flex items-center justify-between">
@@ -510,7 +506,8 @@ function Apply() {
             <button
               onClick={() => {
                 if (!validateStep(step)) return;
-                step === 4 ? handleApplicationSubmit() : setStep((s) => s + 1);
+                if (step === 4) handleApplicationSubmit();
+                else setStep((s) => s + 1);
               }}
               disabled={loading}
               className="inline-flex items-center gap-2 rounded-[14px] bg-ink px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-ink/90 hover:shadow-gold disabled:opacity-50"
@@ -592,7 +589,12 @@ function TrackCard({
   return (
     <button
       onClick={onClick}
-      className={`group flex flex-col items-start rounded-[24px] border p-6 text-left transition-all ${active ? "border-ink bg-ink text-primary-foreground" : "border-border bg-surface hover:-translate-y-0.5 hover:shadow-soft"}`}
+      className={[
+        "group flex flex-col items-start rounded-[24px] border p-6 text-left transition-all",
+        active
+          ? "border-ink bg-ink text-primary-foreground"
+          : "border-border bg-surface hover:-translate-y-0.5 hover:shadow-soft",
+      ].join(" ")}
     >
       <div
         className={`flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-gold text-ink" : "bg-muted text-ink"}`}
