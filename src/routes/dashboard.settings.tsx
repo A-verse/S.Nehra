@@ -4,7 +4,7 @@ import { useSession } from "@/lib/session";
 import { useNavigate } from "@tanstack/react-router";
 import { Reveal } from "@/components/reveal";
 import { Lock, Bell, Shield, Trash2, Eye, EyeOff, Check, Loader2, Moon, Sun } from "lucide-react";
-
+import { Stub } from "@/components/stub";
 export const Route = createFileRoute("/dashboard/settings")({
   component: Settings,
 });

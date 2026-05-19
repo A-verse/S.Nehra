@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { User } from "lucide-react";
-import { Stub } from "./dashboard.training";
+import { Stub } from "@/components/stub";
 
 export const Route = createFileRoute("/dashboard/profile")({
   component: () => (
