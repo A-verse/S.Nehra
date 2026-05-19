@@ -228,3 +228,29 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     next(error);
   }
 };
+
+export const changePassword = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user?.password) throw new AppError("No password set", 400);
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw new AppError("Current password is incorrect", 400);
+    const hashed = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({ where: { id: req.user.id }, data: { password: hashed } });
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteAccount = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    await prisma.user.delete({ where: { id: req.user.id } });
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    res.json({ message: "Account deleted" });
+  } catch (error) {
+    next(error);
+  }
+};

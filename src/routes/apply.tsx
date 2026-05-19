@@ -1,23 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Upload,
-  BarChart3,
-  Headphones,
-  Eye,
-  EyeOff,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, BarChart3, Headphones, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/apply")({
   head: () => ({ meta: [{ title: "Apply — S.Nehra" }] }),
   component: Apply,
 });
 
-const steps = ["Basics", "Track", "Education", "Experience", "Goals", "Resume", "Payment", "Done"];
+const steps = ["Basics", "Track", "Education", "Experience", "Goals", "Payment", "Done"];
 
 declare global {
   interface Window {
@@ -35,8 +26,6 @@ function Apply() {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const [resumeUploaded, setResumeUploaded] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -113,28 +102,7 @@ function Apply() {
         if (!loginRes.ok) throw new Error("Login failed. Check your password.");
       }
 
-      // 3. Resume upload
-      if (resumeFile) {
-        const formDataUpload = new FormData();
-        formDataUpload.append("resume", resumeFile);
-        const resumeRes = await fetch("/api/resume/upload", {
-          method: "POST",
-          credentials: "include",
-          body: formDataUpload,
-        });
-        let resumeData;
-        try {
-          resumeData = await resumeRes.json();
-        } catch (e) {
-          throw new Error("Resume upload failed: Invalid server response");
-        }
-        console.log("Resume:", resumeRes.status, resumeData);
-        if (!resumeRes.ok) {
-          throw new Error(resumeData?.message || "Resume upload failed");
-        }
-      }
-
-      // 4. Application create
+      // 3. Application create
       const appRes = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -146,7 +114,6 @@ function Apply() {
       });
       const appData = await appRes.json();
       console.log("Application:", appRes.status, appData);
-
       if (!appRes.ok) throw new Error(appData.message);
 
       sessionStorage.setItem("verify_email", formData.email);
@@ -468,57 +435,6 @@ function Apply() {
 
             {step === 5 && (
               <Step
-                title="Upload your resume."
-                subtitle="PDF preferred. Don't have one? You can skip — we'll build one for you."
-              >
-                <label
-                  className={`flex cursor-pointer flex-col items-center gap-3 rounded-[24px] border-2 border-dashed px-8 py-16 text-center transition-colors ${
-                    resumeUploaded
-                      ? "border-gold bg-gold/5"
-                      : "border-border bg-surface hover:border-gold"
-                  }`}
-                >
-                  <Upload
-                    className={`h-7 w-7 ${resumeUploaded ? "text-gold" : "text-muted-foreground"}`}
-                  />
-                  <div className="font-display text-xl text-ink">
-                    {resumeUploaded ? `✓ ${resumeFile?.name}` : "Drop your resume here"}
-                  </div>
-                  <div className="text-xs text-muted-foreground">PDF · max 5 MB</div>
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        if (file.size > 5 * 1024 * 1024) {
-                          setError("File 5MB se badi hai");
-                          return;
-                        }
-                        setResumeFile(file);
-                        setResumeUploaded(true);
-                        setError("");
-                      }
-                    }}
-                  />
-                </label>
-                {resumeUploaded && (
-                  <button
-                    onClick={() => {
-                      setResumeFile(null);
-                      setResumeUploaded(false);
-                    }}
-                    className="mt-3 text-xs text-muted-foreground hover:text-destructive transition-colors"
-                  >
-                    Remove file
-                  </button>
-                )}
-              </Step>
-            )}
-
-            {step === 6 && (
-              <Step
                 title="Complete your payment."
                 subtitle="Secure your seat with the application fee."
               >
@@ -582,7 +498,7 @@ function Apply() {
 
         {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
 
-        {step < last && step !== 6 && (
+        {step < last && step !== 5 && (
           <div className="mt-12 flex items-center justify-between">
             <button
               onClick={() => setStep((s) => Math.max(0, s - 1))}
@@ -594,14 +510,14 @@ function Apply() {
             <button
               onClick={() => {
                 if (!validateStep(step)) return;
-                step === 5 ? handleApplicationSubmit() : setStep((s) => s + 1);
+                step === 4 ? handleApplicationSubmit() : setStep((s) => s + 1);
               }}
               disabled={loading}
               className="inline-flex items-center gap-2 rounded-[14px] bg-ink px-7 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-ink/90 hover:shadow-gold disabled:opacity-50"
             >
               {loading
                 ? "Please wait..."
-                : step === 5
+                : step === 4
                   ? "Submit & Continue to Payment"
                   : "Continue"}{" "}
               <ArrowRight className="h-4 w-4" />
