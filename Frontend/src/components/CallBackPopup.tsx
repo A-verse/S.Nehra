@@ -8,7 +8,7 @@ interface CallBackPopupProps {
 }
 
 export default function CallBackPopup({
-  autoShowDelay = 6000,
+  autoShowDelay = 4000,
   isOpen: controlledOpen,
   onClose,
 }: CallBackPopupProps) {
@@ -16,19 +16,13 @@ export default function CallBackPopup({
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [apiError, setApiError] = useState("");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     if (controlledOpen !== undefined) return;
-    // Har refresh pe show karo — sessionStorage check nahi karo
+    if (sessionStorage.getItem("popup_shown")) return; // skip if already seen this session
     const timer = setTimeout(() => {
       setOpen(true);
+      sessionStorage.setItem("popup_shown", "1"); // mark as shown
     }, autoShowDelay);
     return () => clearTimeout(timer);
   }, [autoShowDelay, controlledOpen]);
@@ -40,27 +34,13 @@ export default function CallBackPopup({
     onClose?.();
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) return;
-    setSubmitting(true);
-    setApiError("");
-    try {
-      const res = await fetch("/api/visitors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, source: "popup" }),
-      });
-      if (!res.ok) throw new Error("Failed to submit");
-      setSubmitted(true);
-    } catch {
-      setApiError("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    setSubmitted(true);
   };
 
-  if (!mounted || !isVisible) return null;
+  if (!isVisible) return null;
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
@@ -100,10 +80,7 @@ export default function CallBackPopup({
         onClick={handleClose}
         style={{
           position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          top: 0, left: 0, right: 0, bottom: 0,
           background: "rgba(20, 18, 14, 0.5)",
           backdropFilter: "blur(6px)",
           WebkitBackdropFilter: "blur(6px)",
@@ -140,10 +117,8 @@ export default function CallBackPopup({
           aria-label="Close"
           style={{
             position: "absolute",
-            top: "16px",
-            right: "16px",
-            width: "28px",
-            height: "28px",
+            top: "16px", right: "16px",
+            width: "28px", height: "28px",
             borderRadius: "50%",
             background: "rgba(0,0,0,0.05)",
             border: "none",
@@ -156,8 +131,8 @@ export default function CallBackPopup({
             lineHeight: "1",
             transition: "background 0.2s",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.1)")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.05)")}
+          onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.1)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.05)")}
         >
           ×
         </button>
@@ -165,76 +140,41 @@ export default function CallBackPopup({
         {!submitted ? (
           <>
             {/* Icon */}
-            <div
-              style={{
-                width: "64px",
-                height: "64px",
-                borderRadius: "50%",
-                background: "#ede9e0",
-                border: "1px solid rgba(0,0,0,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 22px",
-              }}
-            >
+            <div style={{
+              width: "64px", height: "64px",
+              borderRadius: "50%",
+              background: "#ede9e0",
+              border: "1px solid rgba(0,0,0,0.08)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 22px",
+            }}>
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M6.6 10.8C7.8 13.2 9.8 15.2 12.2 16.4L14.2 14.4C14.5 14.1 14.9 14 15.2 14.2C16.3 14.6 17.5 14.8 18.7 14.8C19.4 14.8 20 15.4 20 16.1V19.3C20 20 19.4 20.6 18.7 20.6C10.3 20.6 3.4 13.7 3.4 5.3C3.4 4.6 4 4 4.7 4H7.9C8.6 4 9.2 4.6 9.2 5.3C9.2 6.5 9.4 7.7 9.8 8.8C9.9 9.2 9.8 9.6 9.5 9.9L7.5 11.9L6.6 10.8Z"
-                  fill="#7a746a"
-                />
+                <path d="M6.6 10.8C7.8 13.2 9.8 15.2 12.2 16.4L14.2 14.4C14.5 14.1 14.9 14 15.2 14.2C16.3 14.6 17.5 14.8 18.7 14.8C19.4 14.8 20 15.4 20 16.1V19.3C20 20 19.4 20.6 18.7 20.6C10.3 20.6 3.4 13.7 3.4 5.3C3.4 4.6 4 4 4.7 4H7.9C8.6 4 9.2 4.6 9.2 5.3C9.2 6.5 9.4 7.7 9.8 8.8C9.9 9.2 9.8 9.6 9.5 9.9L7.5 11.9L6.6 10.8Z" fill="#7a746a"/>
               </svg>
             </div>
 
-            <h2
-              id="ac-popup-title"
-              style={{
-                fontFamily: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
-                fontSize: "28px",
-                fontWeight: 500,
-                color: "#1a1a18",
-                textAlign: "center",
-                lineHeight: 1.2,
-                margin: "0 0 10px",
-              }}
-            >
+            <h2 id="ac-popup-title" style={{
+              fontFamily: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
+              fontSize: "28px", fontWeight: 500,
+              color: "#1a1a18", textAlign: "center",
+              lineHeight: 1.2, margin: "0 0 10px",
+            }}>
               Request a Call Back
             </h2>
 
-            <p
-              style={{
-                fontSize: "13.5px",
-                fontWeight: 300,
-                color: "#7a746a",
-                textAlign: "center",
-                lineHeight: 1.6,
-                margin: "0 0 28px",
-              }}
-            >
-              Leave your details and our expert
-              <br />
-              will reach out shortly.
+            <p style={{
+              fontSize: "13.5px", fontWeight: 300,
+              color: "#7a746a", textAlign: "center",
+              lineHeight: 1.6, margin: "0 0 28px",
+            }}>
+              Leave your details and our expert<br />will reach out shortly.
             </p>
 
-            <form
-              onSubmit={handleSubmit}
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-            >
-              {/* Name */}
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <div style={{ position: "relative" }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "14px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "#b0aa9e",
-                    display: "flex",
-                    pointerEvents: "none",
-                  }}
-                >
+                <span style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#b0aa9e", display: "flex", pointerEvents: "none" }}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+                    <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
                   </svg>
                 </span>
                 <input
@@ -242,35 +182,18 @@ export default function CallBackPopup({
                   type="text"
                   placeholder="Your name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={e => setName(e.target.value)}
                   required
                   style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "rgba(0,0,0,0.3)";
-                    e.target.style.background = "#e8e4dc";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "rgba(0,0,0,0.1)";
-                    e.target.style.background = "#ede9e0";
-                  }}
+                  onFocus={e => { e.target.style.borderColor = "rgba(0,0,0,0.3)"; e.target.style.background = "#e8e4dc"; }}
+                  onBlur={e => { e.target.style.borderColor = "rgba(0,0,0,0.1)"; e.target.style.background = "#ede9e0"; }}
                 />
               </div>
 
-              {/* Phone */}
               <div style={{ position: "relative" }}>
-                <span
-                  style={{
-                    position: "absolute",
-                    left: "14px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "#b0aa9e",
-                    display: "flex",
-                    pointerEvents: "none",
-                  }}
-                >
+                <span style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#b0aa9e", display: "flex", pointerEvents: "none" }}>
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6.6 10.8C7.8 13.2 9.8 15.2 12.2 16.4L14.2 14.4C14.5 14.1 14.9 14 15.2 14.2C16.3 14.6 17.5 14.8 18.7 14.8C19.4 14.8 20 15.4 20 16.1V19.3C20 20 19.4 20.6 18.7 20.6C10.3 20.6 3.4 13.7 3.4 5.3C3.4 4.6 4 4 4.7 4H7.9C8.6 4 9.2 4.6 9.2 5.3C9.2 6.5 9.4 7.7 9.8 8.8C9.9 9.2 9.8 9.6 9.5 9.9L7.5 11.9L6.6 10.8Z" />
+                    <path d="M6.6 10.8C7.8 13.2 9.8 15.2 12.2 16.4L14.2 14.4C14.5 14.1 14.9 14 15.2 14.2C16.3 14.6 17.5 14.8 18.7 14.8C19.4 14.8 20 15.4 20 16.1V19.3C20 20 19.4 20.6 18.7 20.6C10.3 20.6 3.4 13.7 3.4 5.3C3.4 4.6 4 4 4.7 4H7.9C8.6 4 9.2 4.6 9.2 5.3C9.2 6.5 9.4 7.7 9.8 8.8C9.9 9.2 9.8 9.6 9.5 9.9L7.5 11.9L6.6 10.8Z"/>
                   </svg>
                 </span>
                 <input
@@ -278,148 +201,68 @@ export default function CallBackPopup({
                   type="tel"
                   placeholder="Phone number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={e => setPhone(e.target.value)}
                   required
                   style={inputStyle}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = "rgba(0,0,0,0.3)";
-                    e.target.style.background = "#e8e4dc";
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "rgba(0,0,0,0.1)";
-                    e.target.style.background = "#ede9e0";
-                  }}
+                  onFocus={e => { e.target.style.borderColor = "rgba(0,0,0,0.3)"; e.target.style.background = "#e8e4dc"; }}
+                  onBlur={e => { e.target.style.borderColor = "rgba(0,0,0,0.1)"; e.target.style.background = "#ede9e0"; }}
                 />
               </div>
 
-              {/* API Error */}
-              {apiError && (
-                <p style={{ color: "#e53e3e", fontSize: "12px", textAlign: "center", margin: "0" }}>
-                  {apiError}
-                </p>
-              )}
-
-              {/* Submit */}
               <button
                 type="submit"
-                disabled={submitting}
                 style={{
-                  width: "100%",
-                  padding: "14px",
-                  background: "#1a1a18",
-                  border: "none",
+                  width: "100%", padding: "14px",
+                  background: "#1a1a18", border: "none",
                   borderRadius: "10px",
-                  fontSize: "14px",
-                  fontWeight: 500,
-                  color: "#f5f1ea",
-                  cursor: submitting ? "not-allowed" : "pointer",
-                  marginTop: "4px",
-                  letterSpacing: "0.03em",
-                  opacity: submitting ? 0.7 : 1,
+                  fontSize: "14px", fontWeight: 500,
+                  color: "#f5f1ea", cursor: "pointer",
+                  marginTop: "4px", letterSpacing: "0.03em",
                   transition: "background 0.2s, transform 0.15s",
                 }}
-                onMouseEnter={(e) => {
-                  if (!submitting) {
-                    e.currentTarget.style.background = "#2c2c29";
-                    e.currentTarget.style.transform = "translateY(-1px)";
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "#1a1a18";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#2c2c29"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#1a1a18"; e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                {submitting ? "Submitting..." : "Get a Call Back"}
+                Get a Call Back
               </button>
             </form>
 
-            <p
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "6px",
-                fontSize: "11.5px",
-                fontWeight: 300,
-                color: "#b0aa9e",
-                marginTop: "16px",
-              }}
-            >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <p style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", fontSize: "11.5px", fontWeight: 300, color: "#b0aa9e", marginTop: "16px" }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
               Your details are safe with us
             </p>
           </>
         ) : (
           <div style={{ textAlign: "center", padding: "16px 0" }}>
-            <div
-              style={{
-                width: "64px",
-                height: "64px",
-                borderRadius: "50%",
-                background: "#ede9e0",
-                border: "1px solid rgba(0,0,0,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 20px",
-              }}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#1a1a18"
-                strokeWidth="2"
-              >
-                <polyline points="20 6 9 17 4 12" />
+            <div style={{
+              width: "64px", height: "64px", borderRadius: "50%",
+              background: "#ede9e0", border: "1px solid rgba(0,0,0,0.08)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              margin: "0 auto 20px",
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1a18" strokeWidth="2">
+                <polyline points="20 6 9 17 4 12"/>
               </svg>
             </div>
-            <h2
-              style={{
-                fontFamily: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
-                fontSize: "26px",
-                fontWeight: 500,
-                color: "#1a1a18",
-                margin: "0 0 10px",
-              }}
-            >
+            <h2 style={{
+              fontFamily: "'Cormorant Garamond', 'Playfair Display', Georgia, serif",
+              fontSize: "26px", fontWeight: 500,
+              color: "#1a1a18", margin: "0 0 10px",
+            }}>
               We'll be in touch.
             </h2>
-            <p
-              style={{
-                fontSize: "13.5px",
-                fontWeight: 300,
-                color: "#7a746a",
-                lineHeight: 1.6,
-                margin: "0 0 26px",
-              }}
-            >
-              Thanks, {name}. Our team will call
-              <br />
-              {phone} shortly.
+            <p style={{ fontSize: "13.5px", fontWeight: 300, color: "#7a746a", lineHeight: 1.6, margin: "0 0 26px" }}>
+              Thanks, {name}. Our team will call<br />{phone} shortly.
             </p>
             <button
               onClick={handleClose}
               style={{
-                padding: "12px 32px",
-                background: "#1a1a18",
-                border: "none",
-                borderRadius: "10px",
-                fontSize: "13.5px",
-                fontWeight: 500,
-                color: "#f5f1ea",
-                cursor: "pointer",
-                letterSpacing: "0.03em",
+                padding: "12px 32px", background: "#1a1a18",
+                border: "none", borderRadius: "10px",
+                fontSize: "13.5px", fontWeight: 500,
+                color: "#f5f1ea", cursor: "pointer", letterSpacing: "0.03em",
               }}
             >
               Done
