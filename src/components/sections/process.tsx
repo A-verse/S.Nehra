@@ -1,9 +1,21 @@
 import { Reveal } from "../reveal";
 
 const steps = [
-  { n: "01", t: "Train", d: "12 weeks of live cohort training. Frameworks, simulations, mentors who've shipped." },
-  { n: "02", t: "Get Certified", d: "Capstone assessment + employer-recognized certificate. Verified, ATS-friendly." },
-  { n: "03", t: "Get Hired", d: "Warm intros, interview prep, and ongoing support until you sign the offer." },
+  {
+    n: "01",
+    t: "Train",
+    d: "12 weeks of live cohort training. Frameworks, simulations, mentors who've shipped.",
+  },
+  {
+    n: "02",
+    t: "Get Certified",
+    d: "Capstone assessment + employer-recognized certificate. Verified, ATS-friendly.",
+  },
+  {
+    n: "03",
+    t: "Get Hired",
+    d: "Warm intros, interview prep, and ongoing support until you sign the offer.",
+  },
 ];
 
 export function Process() {
@@ -22,7 +34,10 @@ export function Process() {
             <Reveal key={s.n} delay={i * 0.1}>
               <div className="relative h-full lg:px-8">
                 {i < steps.length - 1 && (
-                  <div className="absolute left-1/2 top-8 hidden h-px w-full -translate-x-0 bg-gradient-to-r from-[oklch(0_0_0/0.15)] to-transparent lg:block" aria-hidden />
+                  <div
+                    className="absolute left-1/2 top-8 hidden h-px w-full -translate-x-0 bg-gradient-to-r from-[oklch(0_0_0/0.15)] to-transparent lg:block"
+                    aria-hidden
+                  />
                 )}
                 <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-[oklch(0_0_0/0.12)] bg-background font-display text-2xl text-gold">
                   {s.n}

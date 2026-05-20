@@ -2,10 +2,26 @@ import { AlertCircle, Frown, ScanLine, Briefcase } from "lucide-react";
 import { Reveal, RevealGroup, RevealItem } from "../reveal";
 
 const pains = [
-  { icon: ScanLine, t: "ATS Black Holes", d: "Your resume never reaches a human. Keywords miss, formats break, you never hear back." },
-  { icon: Frown, t: "Interview Freeze", d: "You know the answers in your head. The moment they ask, your mind goes blank." },
-  { icon: Briefcase, t: "Corporate Gap", d: "Your degree taught theory. Companies want polish, structure, communication, ownership." },
-  { icon: AlertCircle, t: "Career Drift", d: "Switching fields feels impossible. You're stuck in the wrong role with no clear exit." },
+  {
+    icon: ScanLine,
+    t: "ATS Black Holes",
+    d: "Your resume never reaches a human. Keywords miss, formats break, you never hear back.",
+  },
+  {
+    icon: Frown,
+    t: "Interview Freeze",
+    d: "You know the answers in your head. The moment they ask, your mind goes blank.",
+  },
+  {
+    icon: Briefcase,
+    t: "Corporate Gap",
+    d: "Your degree taught theory. Companies want polish, structure, communication, ownership.",
+  },
+  {
+    icon: AlertCircle,
+    t: "Career Drift",
+    d: "Switching fields feels impossible. You're stuck in the wrong role with no clear exit.",
+  },
 ];
 
 export function RealityCheck() {

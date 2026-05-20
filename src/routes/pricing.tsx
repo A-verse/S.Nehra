@@ -3,7 +3,6 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Pricing } from "@/components/sections/pricing";
 import { FAQ } from "@/components/sections/faq";
-
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
@@ -16,12 +15,13 @@ export const Route = createFileRoute("/pricing")({
   }),
   component: () => (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+      {" "}
+      <SiteHeader />{" "}
       <main>
-        <Pricing />
-        <FAQ />
-      </main>
-      <SiteFooter />
+        {" "}
+        <Pricing /> <FAQ />{" "}
+      </main>{" "}
+      <SiteFooter />{" "}
     </div>
   ),
 });

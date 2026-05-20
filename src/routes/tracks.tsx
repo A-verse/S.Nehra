@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Tracks } from "@/components/sections/tracks";
-
 export const Route = createFileRoute("/tracks")({
   head: () => ({
     meta: [
@@ -16,11 +15,13 @@ export const Route = createFileRoute("/tracks")({
   }),
   component: () => (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+      {" "}
+      <SiteHeader />{" "}
       <main>
-        <Tracks />
-      </main>
-      <SiteFooter />
+        {" "}
+        <Tracks />{" "}
+      </main>{" "}
+      <SiteFooter />{" "}
     </div>
   ),
 });

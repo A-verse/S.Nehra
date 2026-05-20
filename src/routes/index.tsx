@@ -10,7 +10,6 @@ import { Pricing } from "@/components/sections/pricing";
 import { FAQ } from "@/components/sections/faq";
 import { FinalCTA } from "@/components/sections/final-cta";
 import CallBackPopup from "@/components/CallBackPopup";
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -30,23 +29,17 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <SiteHeader />
+      {" "}
+      <SiteHeader />{" "}
       <main>
-        <Hero />
-        <RealityCheck />
-        <Solution />
-        <Tracks />
-        <Process />
-        <Pricing />
-        <FAQ />
-        <FinalCTA />
-      </main>
-      <SiteFooter />
-      <CallBackPopup autoShowDelay={4000} />
+        {" "}
+        <Hero /> <RealityCheck /> <Solution /> <Tracks /> <Process /> <Pricing /> <FAQ />{" "}
+        <FinalCTA />{" "}
+      </main>{" "}
+      <SiteFooter /> <CallBackPopup autoShowDelay={4000} />{" "}
     </div>
   );
 }

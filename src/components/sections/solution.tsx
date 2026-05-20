@@ -23,8 +23,8 @@ export function Solution() {
             One job offer you actually want.
           </h2>
           <p className="mt-8 max-w-lg text-base leading-relaxed text-primary-foreground/70">
-            We stopped selling courses. We sell outcomes. Every cohort is small,
-            curated, and supported until the offer letter lands in your inbox.
+            We stopped selling courses. We sell outcomes. Every cohort is small, curated, and
+            supported until the offer letter lands in your inbox.
           </p>
           <Link
             to="/pricing"

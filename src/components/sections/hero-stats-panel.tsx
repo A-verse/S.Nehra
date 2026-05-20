@@ -1,7 +1,6 @@
-import { Card, CardContent } from "../ui/card";
 import { Progress } from "../ui/progress";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { TrendingUp, CheckCircle2, Clock } from "lucide-react";
+import { TrendingUp, Clock } from "lucide-react";
 import { useRef } from "react";
 
 export function HeroStatsPanel() {
