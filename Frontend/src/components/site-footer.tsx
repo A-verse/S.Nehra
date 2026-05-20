@@ -52,7 +52,7 @@ export function SiteFooter() {
               worth keeping.
             </p>
             <div className="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              <span>Remote</span>
+              <span>Remotely Working</span>
               <span className="h-px w-6 bg-border" />
               <span></span>
               <span className="h-px w-6 bg-border" />
@@ -80,7 +80,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-16 flex flex-col gap-4 border-t border-[oklch(0_0_0/0.06)] pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} SNehra Solutions. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SNehra Solutions LLP. All rights reserved.</p>
           <p className="font-display italic">Stop applying. Start getting hired.</p>
         </div>
       </div>
