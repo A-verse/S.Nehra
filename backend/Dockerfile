@@ -4,8 +4,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 RUN npx prisma generate
-RUN esbuild dev-api.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs
-
+RUN npx esbuild dev-api.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs
 FROM node:20-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
