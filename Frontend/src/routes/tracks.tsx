@@ -6,7 +6,7 @@ import { Tracks } from "@/components/sections/tracks";
 export const Route = createFileRoute("/tracks")({
   head: () => ({
     meta: [
-      { title: "Career Tracks — S.Nehra" },
+      { title: "Career Tracks — SNehra Solutions" },
       {
         name: "description",
         content:

@@ -45,18 +45,18 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="font-display text-3xl font-semibold tracking-tight text-ink">
-              S.Nehra
+              SNehra Solutions
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               A premium placement consultancy. We train, certify, and place talent into careers
               worth keeping.
             </p>
             <div className="mt-8 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              <span>Bengaluru</span>
-              <span className="h-px w-6 bg-border" />
-              <span>Mumbai</span>
-              <span className="h-px w-6 bg-border" />
               <span>Remote</span>
+              <span className="h-px w-6 bg-border" />
+              <span></span>
+              <span className="h-px w-6 bg-border" />
+              <span></span>
             </div>
           </div>
           {cols.map((c) => (
@@ -80,7 +80,7 @@ export function SiteFooter() {
           ))}
         </div>
         <div className="mt-16 flex flex-col gap-4 border-t border-[oklch(0_0_0/0.06)] pt-8 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} S.Nehra. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SNehra Solutions. All rights reserved.</p>
           <p className="font-display italic">Stop applying. Start getting hired.</p>
         </div>
       </div>

@@ -7,7 +7,7 @@ import { Solution } from "@/components/sections/solution";
 export const Route = createFileRoute("/process")({
   head: () => ({
     meta: [
-      { title: "Process — S.Nehra" },
+      { title: "Process — SNehra Solutions" },
       {
         name: "description",
         content: "Train. Get certified. Get hired. Three steps, no detours, 12 weeks.",

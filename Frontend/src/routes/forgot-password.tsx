@@ -11,17 +11,25 @@ function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     try {
-      await fetch("/api/auth/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
+      if (!res.ok) throw new Error("Request failed");
       setSent(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -43,7 +51,11 @@ function ForgotPassword() {
       {sent ? (
         <div className="rounded-[14px] bg-muted p-6 text-center">
           <p className="text-sm text-ink">
-            Check your inbox — we've sent a reset link if that email exists.
+            Check your inbox — we've sent a reset link to{" "}
+            <strong>{email}</strong> if that account exists.
+          </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Didn't receive it? Email us at info@snehrasolutions.com
           </p>
           <Link
             to="/login"
@@ -61,6 +73,7 @@ function ForgotPassword() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {error && <p className="text-sm text-red-500">{error}</p>}
           <button
             type="submit"
             disabled={loading}

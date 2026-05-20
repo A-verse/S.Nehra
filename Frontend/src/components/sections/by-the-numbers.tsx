@@ -14,7 +14,7 @@ const proofs = [
   { icon: Building2, k: "62", v: "SaaS, fintech & e-commerce brands hire from us each cohort." },
   { icon: Clock, k: "12 wk", v: "Cohort duration. Live, not async. Mentor-paired throughout." },
   { icon: Users2, k: "1:8", v: "Mentor-to-candidate ratio. Real feedback every week." },
-  { icon: BadgeCheck, k: "100%", v: "Written outcome guarantee. No coupon games. No fine print." },
+  { icon: BadgeCheck, k: "100%", v: "We Stay with you until you land. No coupon games. No fine print." },
 ];
 
 export function ByTheNumbers() {

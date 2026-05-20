@@ -4,7 +4,7 @@ import { AuthShell, AuthField } from "@/components/auth/auth-shell";
 import { useSession } from "@/lib/session";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Sign in — S.Nehra" }] }),
+  head: () => ({ meta: [{ title: "Sign in — SNehra Solutions" }] }),
   component: Login,
 });
 

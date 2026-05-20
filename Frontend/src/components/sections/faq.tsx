@@ -5,16 +5,16 @@ import { Reveal } from "../reveal";
 
 const faqs = [
   {
-    q: "Who is this program for?",
+    q: "What is this program for?",
     a: "Graduates and early-career professionals (0–3 yrs) targeting high-growth, non-technical careers in SaaS, fintech and e-commerce. You don't need a tech background.",
   },
   {
     q: "What if I don't get placed?",
-    a: "Our written guarantee covers either a full refund or continued support until you sign an offer — your choice, no fine print.",
+    a: "We provide dedicated placement support and work withhiring partners to maximize your chances — however, our fee covers training and assistance, not a placement guarantee. Results depend on your effort and commitment.",
   },
   {
     q: "Is this online or in-person?",
-    a: "Live online cohorts with optional in-person meetups in Bengaluru and Mumbai. All sessions are recorded for catch-up.",
+    a: "Live online cohorts. All sessions are recorded for catch-up.",
   },
   {
     q: "How much time per week?",
@@ -22,11 +22,11 @@ const faqs = [
   },
   {
     q: "Can I pay after placement?",
-    a: "Yes. An Income Share Agreement is available for shortlisted candidates — ₹0 upfront, pay after you start earning.",
+    a: "Our program fee covers 12 weeks of training, certification, and placement assistance. Payment is required upfront as we invest fully in your preparation from day one — not just the outcome.",
   },
   {
     q: "When is the next cohort?",
-    a: "We run cohorts every 6 weeks. Applications close 10 days before each start date. Limited to 40 seats per cohort.",
+    a: "We run cohorts every 1 weeks. Applications close 1 week before each start date. Limited to 40 seats per cohort.",
   },
 ];
 

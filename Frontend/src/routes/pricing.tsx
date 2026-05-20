@@ -7,10 +7,10 @@ import { FAQ } from "@/components/sections/faq";
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — S.Nehra" },
+      { title: "Pricing — SNehra Solutions" },
       {
         name: "description",
-        content: "One investment. One outcome. Pay upfront or after placement — your choice.",
+        content: "One investment. One outcome. Pay upfront No hidden fees. No revenue share.",
       },
     ],
   }),

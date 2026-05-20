@@ -7,7 +7,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — S.Nehra" },
+      { title: "Contact — SNehra Solutions" },
       {
         name: "description",
         content: "Talk to admissions. We respond to every message within one business day.",
@@ -33,9 +33,9 @@ function Contact() {
           <Reveal delay={0.1}>
             <div className="space-y-8">
               {[
-                { icon: Mail, t: "Email", v: "admissions@snehra.co" },
-                { icon: Phone, t: "Call", v: "+91 80 4567 8900" },
-                { icon: MapPin, t: "Studio", v: "Indiranagar, Bengaluru" },
+                { icon: Mail, t: "Email", v: "info@snehrasolutions.com" },
+                { icon: Phone, t: "Call", v: "+91 87 6429 1078 " },
+                { icon: MapPin, t: "Studio", v: "Currently we are operating remotely" },
               ].map((i) => (
                 <div key={i.t} className="flex items-start gap-4">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink text-primary-foreground">

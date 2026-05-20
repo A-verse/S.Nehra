@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, BarChart3, Headphones, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/apply")({
-  head: () => ({ meta: [{ title: "Apply — S.Nehra" }] }),
+  head: () => ({ meta: [{ title: "Apply — SNehra Solutions" }] }),
   component: Apply,
 });
 
@@ -142,10 +142,10 @@ function Apply() {
 
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: order.amount,
+        amount: order.amount * 100, // convert to paise
         currency: order.currency,
-        name: "S.Nehra",
-        description: "Application Fee — Cohort 14",
+        name: "SNehra Solutions",
+        description: "Application Fee",
         order_id: order.id,
         handler: async (response: any) => {
           const verifyRes = await fetch("/api/payments/verify", {
@@ -179,7 +179,7 @@ function Apply() {
       <header className="border-b border-[oklch(0_0_0/0.06)] bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 lg:px-10">
           <Link to="/" className="font-display text-xl font-semibold text-ink">
-            S<span className="text-gold">.</span>Nehra
+            SNehra<span className="text-gold">.</span>Solutions
           </Link>
           <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Step {Math.min(step + 1, last)} of {last}

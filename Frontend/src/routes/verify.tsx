@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { AuthShell } from "@/components/auth/auth-shell";
 
 export const Route = createFileRoute("/verify")({
-  head: () => ({ meta: [{ title: "Verify email — S.Nehra" }] }),
+  head: () => ({ meta: [{ title: "Verify email — SNehra Solutions" }] }),
   component: Verify,
 });
 

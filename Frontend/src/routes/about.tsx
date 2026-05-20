@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({ meta: [{ title: "About — S.Nehra" }] }),
+  head: () => ({ meta: [{ title: "About — SNehra Solutions" }] }),
   component: About,
 });
 
@@ -20,7 +20,7 @@ function About() {
           </h1>
           <div className="mt-10 space-y-6 text-lg leading-relaxed text-muted-foreground">
             <p>
-              S.Nehra was founded by a group of operators who spent a decade hiring, training, and
+              SNehra Solutions was founded by a group of operators who spent a decade hiring, training, and
               managing early-career talent at SaaS and fintech companies.
             </p>
             <p>
