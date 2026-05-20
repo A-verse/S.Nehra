@@ -3,9 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { Reveal } from "../reveal";
 
 const trustBadges = [
-  { icon: Shield, label: "Written Job Guarantee" },
+  { icon: Shield, label: "We Stay with You until You Land" },
   { icon: TrendingUp, label: "94% Placement Rate" },
-  { icon: Users, label: "180+ Hiring Partners" },
+  { icon: Users, label: "Trusted Hiring Partners" },
 ];
 
 export function Hero() {
