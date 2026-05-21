@@ -17,8 +17,7 @@ import visitorRoutes from "./src/server/routes/visitor.routes";
 // ...
 
 const app = express();
-const app = express();
-app.set("trust proxy", 1); // Render ke liye zaroori hai
+app.set("trust proxy", 1);
 
 // Security
 app.use(helmet());
@@ -53,5 +52,5 @@ app.use("/api/visitors", visitorRoutes);
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`API running on http://localhost:${PORT}`));
