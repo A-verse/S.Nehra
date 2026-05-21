@@ -72,7 +72,7 @@ function Apply() {
     setError("");
     try {
       // 1. Signup
-      const signupRes = await fetch("/api/auth/signup", {
+      const signupRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -91,7 +91,8 @@ function Apply() {
 
       // 2. Login if already registered
       if (!signupRes.ok) {
-        const loginRes = await fetch("/api/auth/login", {
+        // Line 2 - login
+const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -103,7 +104,7 @@ function Apply() {
       }
 
       // 3. Application create
-      const appRes = await fetch("/api/applications", {
+      const appRes = await fetch(`${import.meta.env.VITE_API_URL}/api/applications`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -130,7 +131,7 @@ function Apply() {
     setLoading(true);
     setError("");
     try {
-      const orderRes = await fetch("/api/payments/create-order", {
+     const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
