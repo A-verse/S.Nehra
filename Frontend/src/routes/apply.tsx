@@ -451,7 +451,7 @@ const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/creat
                     <div>
                       <div className="font-display text-2xl text-ink">Application Fee</div>
                       <div className="mt-1 text-sm text-muted-foreground">
-                        Refundable if not selected
+                        No hidden charges. 
                       </div>
                     </div>
                     <div className="font-display text-4xl text-ink">₹9,999</div>
@@ -459,8 +459,8 @@ const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/creat
                   <div className="mt-6 space-y-2">
                     {[
                       "Seat reserved in Cohort 14",
-                      "Application reviewed in 48 hrs",
-                      "Full refund if not selected",
+                      "Application reviewed in  5-7 minutes",
+                      "Support until you’re hired",
                     ].map((item) => (
                       <div
                         key={item}
@@ -491,7 +491,7 @@ const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/creat
                 </div>
                 <h2 className="mt-8 font-display text-display-md text-ink">You're in.</h2>
                 <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
-                  Payment confirmed. Your admissions advisor will reach out within 48 hours.
+                  Payment confirmed. Your admissions advisor will reach out within 5 minutes.
                 </p>
                 <Link
                   to="/dashboard"

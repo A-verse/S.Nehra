@@ -9,7 +9,6 @@ import { Process } from "@/components/sections/process";
 import { Pricing } from "@/components/sections/pricing";
 import { FAQ } from "@/components/sections/faq";
 import { FinalCTA } from "@/components/sections/final-cta";
-import CallBackPopup from "@/components/CallBackPopup";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,7 +45,6 @@ function Index() {
         <FinalCTA />
       </main>
       <SiteFooter />
-      <CallBackPopup autoShowDelay={4000} />
     </div>
   );
 }
