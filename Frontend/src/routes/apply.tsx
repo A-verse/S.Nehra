@@ -67,74 +67,81 @@ function Apply() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleApplicationSubmit = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      // 1. Signup
-      const signupRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          name: formData.fullName,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
-      const signupData = await signupRes.json();
-      console.log("Signup:", signupRes.status, signupData);
+ const handleApplicationSubmit = async () => {
+  setLoading(true);
+  setError("");
+  try {
+    let token = "";
 
-      if (!signupRes.ok && signupData.message !== "Email already registered") {
-        throw new Error(signupData.message);
-      }
+    // 1. Signup try karo
+    const signupRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
+    const signupData = await signupRes.json();
 
-      // 2. Login if already registered
-      if (!signupRes.ok) {
-        // Line 2 - login
-const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
-        });
-        const loginData = await loginRes.json();
-        console.log("Login:", loginRes.status, loginData);
-        if (!loginRes.ok) throw new Error("Login failed. Check your password.");
-      }
-
-      // 3. Application create
-      const appRes = await fetch(`${import.meta.env.VITE_API_URL}/api/applications`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          trackId: track ?? "sales",
-          data: { ...formData, experience: exp },
-        }),
-      });
-      const appData = await appRes.json();
-      console.log("Application:", appRes.status, appData);
-      if (!appRes.ok) throw new Error(appData.message);
-
-      sessionStorage.setItem("verify_email", formData.email);
-      setStep(last - 1);
-    } catch (err: any) {
-      console.error("Error:", err);
-      setError(err.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+    if (!signupRes.ok && signupData.message !== "Email already registered") {
+      throw new Error(signupData.message);
     }
-  };
+
+    // 2. Login karke token lo
+    const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email: formData.email, password: formData.password }),
+    });
+    const loginData = await loginRes.json();
+    if (!loginRes.ok) throw new Error("Login failed. Check your password.");
+    token = loginData.accessToken;
+
+    // 3. Application create — token header mein bhejo
+    const appRes = await fetch(`${import.meta.env.VITE_API_URL}/api/applications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        trackId: track ?? "sales",
+        data: { ...formData, experience: exp },
+      }),
+    });
+    const appData = await appRes.json();
+    if (!appRes.ok) throw new Error(appData.message);
+
+    // Token save karo payment ke liye
+    sessionStorage.setItem("access_token", token);
+
+    sessionStorage.setItem("verify_email", formData.email);
+    setStep(last - 1);
+  } catch (err: any) {
+    console.error("Error:", err);
+    setError(err.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handlePayment = async () => {
     setLoading(true);
     setError("");
     try {
-     const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/create-order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+     const paymentToken = sessionStorage.getItem("access_token") || "";
+const orderRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/create-order`, {
+  method: "POST",
+  headers: { 
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${paymentToken}`,
+  },
+  credentials: "include",
         body: JSON.stringify({ amount: 9999, description: "S.Nehra — Application Fee" }),
       });
       const order = await orderRes.json();

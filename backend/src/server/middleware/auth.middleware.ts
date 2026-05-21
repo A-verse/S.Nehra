@@ -11,19 +11,19 @@ export interface AuthRequest extends Request {
 }
 
 export const authenticate = async (req: AuthRequest, res: Response, next: NextFunction) => {
-  const token = req.cookies.accessToken;
+  // Cookie se token lo, ya Authorization header se
+  const token = req.cookies.accessToken || 
+    req.headers.authorization?.replace("Bearer ", "");
 
   if (!token) {
     return res.status(401).json({ message: "Authentication required" });
   }
 
   const decoded = verifyAccessToken(token) as any;
-
   if (!decoded) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 
-  // Optional: Check DB to ensure user still exists and isn't disabled
   const user = await prisma.user.findUnique({
     where: { id: decoded.id },
     select: { id: true, email: true, role: true, name: true },

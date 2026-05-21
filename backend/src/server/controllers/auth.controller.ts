@@ -126,9 +126,10 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     res.cookie("refreshToken", refreshToken, getCookieOptions("refresh"));
 
     res.json({
-      message: "Logged in successfully",
-      user: { id: user.id, email: user.email, name: user.name, role: user.role },
-    });
+  message: "Logged in successfully",
+  accessToken,
+  user: { id: user.id, email: user.email, name: user.name, role: user.role },
+});
   } catch (error) {
     next(error);
   }
