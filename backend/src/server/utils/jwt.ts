@@ -32,8 +32,8 @@ export const getCookieOptions = (type: 'access' | 'refresh') => {
   const expiresIn = type === 'access' ? '15m' : '7d';
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
+    secure: true,
+    sameSite: 'none' as const,
     maxAge: ms(expiresIn),
     path: '/',
   };

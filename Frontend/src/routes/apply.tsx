@@ -149,7 +149,7 @@ const loginRes = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         description: "Application Fee",
         order_id: order.id,
         handler: async (response: any) => {
-          const verifyRes = await fetch("/api/payments/verify", {
+          const verifyRes = await fetch(`${import.meta.env.VITE_API_URL}/api/payments/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

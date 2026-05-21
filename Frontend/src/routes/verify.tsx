@@ -44,7 +44,7 @@ function Verify() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/auth/verify-email", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/verify-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -65,13 +65,15 @@ function Verify() {
   const handleResend = async () => {
     if (!email) return;
     try {
-      await fetch("/api/auth/resend-verification", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/auth/resend-verification`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
       setSeconds(45);
-    } catch {}
+    } catch (err) {
+      setError("Failed to resend verification code.");
+    }
   };
 
   return (
