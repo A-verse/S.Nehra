@@ -75,6 +75,15 @@ model Visitor {
   createdAt DateTime @default(now())
 }
 
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
 model Profile {
   id              String   @id @default(cuid())
 

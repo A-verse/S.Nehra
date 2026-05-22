@@ -14,6 +14,7 @@ import applicationRoutes from "./src/server/routes/application.routes";
 import notificationRoutes from "./src/server/routes/notification.routes";
 import resumeRoutes from "./src/server/routes/resume.ts";
 import visitorRoutes from "./src/server/routes/visitor.routes";
+import contactRoutes from "./src/server/routes/contact.routes";
 // ...
 
 const app = express();
@@ -48,6 +49,7 @@ app.use("/api/applications", applicationRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/visitors", visitorRoutes);
+app.use("/api/contact", contactRoutes);
 // ... other routes
 
 app.use(errorHandler);
